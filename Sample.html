@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生分数记录系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        input:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        .btn {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+        }
+
+        .btn-success {
+            background: #2ecc71;
+        }
+
+        .btn-success:hover {
+            background: #27ae60;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .score-high {
+            color: #2ecc71;
+        }
+
+        .score-medium {
+            color: #f39c12;
+        }
+
+        .score-low {
+            color: #e74c3c;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .actions button {
+            padding: 6px 10px;
+            font-size: 14px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: #7f8c8d;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+            color: #bdc3c7;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>学生分数记录系统</h1>
+        <p class="subtitle">高效管理学生成绩，实时查看统计分析</p>
+    </header>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="stat-label">学生总数</div>
+            <div class="stat-value" id="total-students">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">平均分数</div>
+            <div class="stat-value" id="average-score">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">最高分数</div>
+            <div class="stat-value" id="highest-score">0</div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="left-column">
+            <div class="card">
+                <h2>添加学生</h2>
+                <form id="student-form">
+                    <div class="form-group">
+                        <label for="name">学生姓名</label>
+                        <input type="text" id="name" placeholder="输入学生姓名" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="student-id">学号</label>
+                        <input type="text" id="student-id" placeholder="输入学号" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">科目</label>
+                        <select id="subject" required>
+                            <option value="">选择科目</option>
+                            <option value="数学">数学</option>
+                            <option value="语文">语文</option>
+                            <option value="英语">英语</option>
+                            <option value="物理">物理</option>
+                            <option value="化学">化学</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="score">分数</label>
+                        <input type="number" id="score" min="0" max="100" placeholder="0-100" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">添加记录</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2>快速操作</h2>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn" id="sort-by-score">按分数排序</button>
+                    <button class="btn" id="filter-high">显示优秀(≥90)</button>
+                    <button class="btn" id="show-all">显示全部</button>
+                    <button class="btn btn-danger" id="clear-all">清空记录</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-column">
+            <div class="card">
+                <h2>学生成绩记录</h2>
+                <div id="student-table-container">
+                    <table id="student-table">
+                        <thead>
+                        <tr>
+                            <th>姓名</th>
+                            <th>学号</th>
+                            <th>科目</th>
+                            <th>分数</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id="student-table-body">
+                        <!-- 数据将通过JavaScript动态添加 -->
+                        </tbody>
+                    </table>
+                    <div id="empty-state" class="empty-state">
+                        <i>📊</i>
+                        <p>暂无学生记录，请添加学生成绩</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>学生分数记录系统 &copy; 2023 - 设计用于教育管理</p>
+    </footer>
+</div>
+
+<script>
+    // 初始化学生数据数组
+    let students = JSON.parse(localStorage.getItem('students')) || [];
+
+    // DOM元素
+    const studentForm = document.getElementById('student-form');
+    const studentTableBody = document.getElementById('student-table-body');
+    const emptyState = document.getElementById('empty-state');
+    const totalStudentsEl = document.getElementById('total-students');
+    const averageScoreEl = document.getElementById('average-score');
+    const highestScoreEl = document.getElementById('highest-score');
+    const sortByScoreBtn = document.getElementById('sort-by-score');
+    const filterHighBtn = document.getElementById('filter-high');
+    const showAllBtn = document.getElementById('show-all');
+    const clearAllBtn = document.getElementById('clear-all');
+
+    // 初始化页面
+    document.addEventListener('DOMContentLoaded', function() {
+        renderStudents();
+        updateStats();
+
+        // 表单提交事件
+        studentForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            addStudent();
+        });
+
+        // 按钮事件
+        sortByScoreBtn.addEventListener('click', sortByScore);
+        filterHighBtn.addEventListener('click', filterHighScores);
+        showAllBtn.addEventListener('click', showAllStudents);
+        clearAllBtn.addEventListener('click', clearAllRecords);
+    });
+
+    // 添加学生
+    function addStudent() {
+        const name = document.getElementById('name').value;
+        const studentId = document.getElementById('student-id').value;
+        const subject = document.getElementById('subject').value;
+        const score = parseInt(document.getElementById('score').value);
+
+        // 创建新学生对象
+        const student = {
+            id: Date.now(), // 使用时间戳作为唯一ID
+            name,
+            studentId,
+            subject,
+            score
+        };
+
+        // 添加到数组
+        students.push(student);
+
+        // 保存到本地存储
+        saveToLocalStorage();
+
+        // 更新UI
+        renderStudents();
+        updateStats();
+
+        // 重置表单
+        studentForm.reset();
+    }
+
+    // 渲染学生列表
+    function renderStudents(filteredStudents = null) {
+        const studentsToRender = filteredStudents || students;
+
+        // 清空表格
+        studentTableBody.innerHTML = '';
+
+        if (studentsToRender.length === 0) {
+            emptyState.style.display = 'block';
+            return;
+        }
+
+        emptyState.style.display = 'none';
+
+        // 添加学生行
+        studentsToRender.forEach(student => {
+            const row = document.createElement('tr');
+
+            // 根据分数设置颜色类
+            let scoreClass = '';
+            if (student.score >= 90) scoreClass = 'score-high';
+            else if (student.score >= 60) scoreClass = 'score-medium';
+            else scoreClass = 'score-low';
+
+            row.innerHTML = `
+                    <td>${student.name}</td>
+                    <td>${student.studentId}</td>
+                    <td>${student.subject}</td>
+                    <td class="${scoreClass}">${student.score}</td>
+                    <td class="actions">
+                        <button class="btn btn-danger" onclick="deleteStudent(${student.id})">删除</button>
+                    </td>
+                `;
+
+            studentTableBody.appendChild(row);
+        });
+    }
+
+    // 删除学生
+    function deleteStudent(id) {
+        if (confirm('确定要删除这条记录吗？')) {
+            students = students.filter(student => student.id !== id);
+            saveToLocalStorage();
+            renderStudents();
+            updateStats();
+        }
+    }
+
+    // 按分数排序
+    function sortByScore() {
+        const sortedStudents = [...students].sort((a, b) => b.score - a.score);
+        renderStudents(sortedStudents);
+    }
+
+    // 过滤高分学生
+    function filterHighScores() {
+        const highScorers = students.filter(student => student.score >= 90);
+        renderStudents(highScorers);
+    }
+
+    // 显示所有学生
+    function showAllStudents() {
+        renderStudents();
+    }
+
+    // 清空所有记录
+    function clearAllRecords() {
+        if (confirm('确定要清空所有记录吗？此操作不可撤销！')) {
+            students = [];
+            saveToLocalStorage();
+            renderStudents();
+            updateStats();
+        }
+    }
+
+    // 更新统计信息
+    function updateStats() {
+        totalStudentsEl.textContent = students.length;
+
+        if (students.length === 0) {
+            averageScoreEl.textContent = '0';
+            highestScoreEl.textContent = '0';
+            return;
+        }
+
+        // 计算平均分
+        const totalScore = students.reduce((sum, student) => sum + student.score, 0);
+        const averageScore = (totalScore / students.length).toFixed(1);
+        averageScoreEl.textContent = averageScore;
+
+        // 计算最高分
+        const highestScore = Math.max(...students.map(student => student.score));
+        highestScoreEl.textContent = highestScore;
+    }
+
+    // 保存到本地存储
+    function saveToLocalStorage() {
+        localStorage.setItem('students', JSON.stringify(students));
+    }
+</script>
+</body>
+</html>
