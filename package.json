@@ -1,6 +1,6 @@
 {
   "name": "web_design",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "engines": {
@@ -13,6 +13,10 @@
   },
   "dependencies": {
     "element-plus": "^2.11.5",
+    "express": "^5.1.0",
+    "morgan": "^1.10.1",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7",
     "tailwindcss": "^4.1.16",
     "vue": "^3.5.22"
   },

@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+body {
+    @apply bg-gray-100;
+}
+
+h1 {
+    @apply text-5xl font-bold;
+}
+
+h3 {
+    @apply text-3xl font-bold w-auto;
+}
+
+button {
+    @apply cursor-pointer;
+}

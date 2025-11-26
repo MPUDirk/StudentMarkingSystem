@@ -1,38 +1,85 @@
-# web_design
+# Student Marking System
 
-This template should help get you started developing with Vue 3 in Vite.
+A web-based student grading management system built with Vue.js and Node.js that allows efficient tracking and analysis of student performance across multiple subjects.
 
-## Recommended IDE Setup
+## Features
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- **Real-time Data Management**: Add, view, and delete student records
+- **Performance Analytics**: Automatic calculation of averages and identification of highest scorers
+- **Subject-specific Analysis**: Filter statistics by English, Mathematics, or Physical Education
+- **Interactive Dashboard**: Visual representation of key metrics
+- **Responsive Design**: Works seamlessly across desktop and mobile devices
 
-## Recommended Browser Setup
+## Demo
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd) 
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+Live demo available at: [http://p2304362.dc-yan.top/sms](http://p2304362.dc-yan.top/sms)
 
-## Customize configuration
+## Technologies Used
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+- **Frontend**: Vue.js 3, Tailwind CSS, Element Plus
+- **Backend**: Node.js, Express.js
+- **Database**: SQLite
+- **Build Tools**: Vite
 
-## Project Setup
+## Installation
 
-```sh
-npm install
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/MPUDirk/StudentMarkingSystem.git
+   ```
+
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+
+3. Build the project:
+   ```bash
+   npm run build
+   ```
+
+
+4. Start the server:
+   ```bash
+   node server.mjs
+   ```
+
+
+5. Access the application at `http://localhost:8000`
+
+## Usage
+
+- Click "Add New Record" to create a new student entry
+- Use the navigation arrows to switch between subjects for analytics
+- Delete records using the "Delete" button in each row
+- View real-time statistics including number of students, average grades, and highest scores
+
+## Project Structure
+
+```
+├── src/                 # Frontend source code
+│   ├── App.vue          # Main application component
+│   ├── components/      # Reusable components
+│   └── assets/          # Static assets
+├── dist/               # Built frontend files
+├── server.mjs          # Backend server
+├── api.mjs             # API routes
+└── db.sqlite           # SQLite database
 ```
 
-### Compile and Hot-Reload for Development
 
-```sh
-npm run dev
-```
+## API Endpoints
 
-### Compile and Minify for Production
+- `GET /api/grades` - Retrieve all student records
+- `POST /api/grade` - Create a new student record
+- `DELETE /api/grade/:id` - Delete a student record by ID
 
-```sh
-npm run build
-```
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Repository
+
+[https://github.com/MPUDirk/StudentMarkingSystem](https://github.com/MPUDirk/StudentMarkingSystem)
