@@ -70,7 +70,7 @@ onMounted(() => {
       data => {
         // Compute overall average score across English, Math, and PE for each student
         data.forEach(data => {
-          data['all_sub'] = (data['englishGrade'] + data['mathGrade'] + data['peGrade']) / 3;
+          data['all_sub'] = Math.floor((data['englishGrade'] + data['mathGrade'] + data['peGrade']) / 3);
         });
         tableData.value = data;
         std_num.value = tableData.value.length;
@@ -250,11 +250,16 @@ function event_created(data) {
 
     <div class="col-span-2 rounded-[5px] p-5 bg-white shadow-md">
       <h3 class="card-title">Student Performance Records</h3>
-      <el-table :data="tableData">
+      <el-table :data="tableData" table-layout="auto">
         <el-table-column class-name="text-xs" prop="name" label="Name" sortable></el-table-column>
         <el-table-column class-name="text-xs" prop="englishGrade" label="English" sortable></el-table-column>
         <el-table-column class-name="text-xs" prop="mathGrade" label="Mathematics" sortable></el-table-column>
         <el-table-column class-name="text-xs" prop="peGrade" label="Physical Education" sortable></el-table-column>
+        <el-table-column class-name="text-xs" prop="all_sub" label="Average" sortable>
+          <template #default="scope">
+            {{ scope.row.all_sub }}<span v-if="scope.row.all_sub < 60" class="text-red-500">**</span>
+          </template>
+        </el-table-column>
         <el-table-column>
           <template #default="scope">
             <button
