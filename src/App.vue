@@ -182,7 +182,7 @@ function handle_delete(i, data) {
 function event_created(data) {
   std_num.value++;
 
-  data['all_sub'] = (data['englishGrade'] + data['mathGrade'] + data['peGrade']) / 3;
+  data['all_sub'] = Math.floor((data['englishGrade'] + data['mathGrade'] + data['peGrade']) / 3);
   tableData.value.push(data);
 
   set_avg();
